@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -8,7 +8,8 @@ import reportWebVitals from "./reportWebVitals";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
+import { getStorage } from "firebase/storage";
+// Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -24,14 +25,20 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firebase = initializeApp(firebaseConfig);
+export const firestore = getFirestore(firebase);
+export const storage = getStorage(firebase);
+export const analytics = getAnalytics(firebase);
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(
+ReactDOM.render(
   <React.StrictMode>
+    {/* TODO - add loading page */}
+    {/* <Suspense fallback={<LoadingPage />}> */}
     <App />
-  </React.StrictMode>
+    {/* </Suspense> */}
+  </React.StrictMode>,
+
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
